@@ -1,16 +1,26 @@
 pipeline {
     agent any
 
-    triggers {
-        pollSCM('H/2 * * * *')
-    }
-
     stages {
-        stage('Checkout Info') {
+        stage('Checkout') {
             steps {
-                echo "Triggered by GitHub SCM polling"
+                echo 'Code checked out from GitHub'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
                 sh '''
-                  git log -1 --oneline
+                  docker version
+                  docker build -t python-backend:ci .
+                '''
+            }
+        }
+
+        stage('Verify Image') {
+            steps {
+                sh '''
+                  docker images | grep python-backend
                 '''
             }
         }
