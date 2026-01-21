@@ -12,7 +12,9 @@ pipeline {
             steps {
                 sh '''
                   docker version
-                  docker build -t python-backend:ci .
+                  docker build -t python-backend:ci -f backend/Dockerfile backend
+
+
                 '''
             }
         }
